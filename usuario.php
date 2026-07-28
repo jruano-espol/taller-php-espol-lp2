@@ -17,6 +17,28 @@ function validar($cedula) {
     }
     return false;
 }
+
+class Usuario {
+    public function __construct(
+        public string $cedula,
+        public string $nombre,
+        public string $estado_civil,
+        public string $correo,
+        public string $clave_hash
+    ) {}
+
+    public static function buscar(string $cedula) {
+        if (!file_exists("usuarios.csv")) return null;
+        $lineas = file("usuarios.csv");
+        foreach ($lineas as $linea) {
+            $campos = explode(",", $linea);
+            if ($campos[0] == $cedula) {
+                return new Usuario($campos[0], $campos[1], $campos[2], $campos[3], $campos[4]);
+            }
+        }
+        return null;
+    }
+}
  
 function autenticar($cedula, $contrasena) {
     if (!file_exists("usuarios.csv")) return false;

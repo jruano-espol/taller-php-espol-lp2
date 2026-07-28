@@ -29,8 +29,9 @@ function obtenerMayorID(string $usuario) {
 
 function guardarTarea(string $usuario, string $texto) {
     $id = obtenerMayorID($usuario) + 1;
+    $textoSinComas = str_replace(',', ';', $texto);
     $estado = "pendiente";
-    $linea = "$id,$texto,$estado\n";
+    $linea = "$id,$textoSinComas,$estado\n";
     file_put_contents("tareas_$usuario.csv", $linea, FILE_APPEND);
 }
 

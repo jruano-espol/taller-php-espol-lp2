@@ -43,28 +43,36 @@ function listarTareas(string $usuario) {
     $lineas = file("tareas_$usuario.csv");
     foreach ($lineas as $linea) {
         $tarea = Tarea::deLinea($linea);
-        if (strcmp($tarea->estado, 'pendiente') == 0) {
+        if (strcasecmp($tarea->estado, 'pendiente') == 0) {
             $pendientes[] = $tarea;
-        } else if (strcmp($tarea->estado, 'completada') == 0) {
+        } else if (strcasecmp($tarea->estado, 'completada') == 0) {
             $completadas[] = $tarea;
         }
     }
     return [$pendientes, $completadas];
 }
 
-function completarTarea(string $usuario, int $id) {
+function modificarEstadoDeTarea(string $usuario, int $id, string $nuevo_estado) {
     if (!file_exists("tareas_$usuario.csv")) {
-        return null;
+        return;
     }
     $lineas = file("tareas_$usuario.csv");
     foreach ($lineas as &$linea) {
         $tarea = Tarea::deLinea($linea);
         if ($tarea->id == $id) {
-            $tarea->estado = 'completada';
+            $tarea->estado = $nuevo_estado;
             $linea = "{$tarea->id},{$tarea->texto},{$tarea->estado}\n";
         }
     }
     file_put_contents("tareas_$usuario.csv", implode("", $lineas));
+}
+
+function completarTarea(string $usuario, int $id) {
+    modificarEstadoDeTarea($usuario, $id, 'completada');
+}
+
+function descompletarTarea(string $usuario, int $id) {
+    modificarEstadoDeTarea($usuario, $id, 'pendiente');
 }
 
 function eliminarTarea(string $usuario, int $id) {

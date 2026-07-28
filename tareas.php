@@ -15,6 +15,27 @@ if ($usuario === null) {
 }
 
 list($pendientes, $completadas) = listarTareas($usuario->nombre);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['completar'])) {
+        $id = (int)$_POST['completar'];
+        completarTarea($usuario->nombre, $id);
+        header("Location: tareas.php");
+        exit;
+    }
+    if (isset($_POST['descompletar'])) {
+        $id = (int)$_POST['descompletar'];
+        descompletarTarea($usuario->nombre, $id);
+        header("Location: tareas.php");
+        exit;
+    }
+    if (isset($_POST['eliminar'])) {
+        $id = (int)$_POST['eliminar'];
+        eliminarTarea($usuario->nombre, $id);
+        header("Location: tareas.php");
+        exit;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -38,7 +59,11 @@ list($pendientes, $completadas) = listarTareas($usuario->nombre);
         echo "<div class='listaTareas'>";
         foreach ($pendientes as $tarea) {
             echo "<div class='tareaPendiente'>";
-            echo "<p>" . htmlspecialchars($tarea->texto) . "</p>";
+            echo "  <p>" . htmlspecialchars($tarea->texto) . "</p>";
+            echo "  <form method='POST'>";
+            echo "    <button type='submit' value='{$tarea->id}' name='completar' class='completar'>Completar</button>";
+            echo "    <button type='submit' value='{$tarea->id}' name='eliminar' class='eliminar'>Eliminar</button>";
+            echo "  </form>";
             echo "</div>";
         }
         echo "</div>";
@@ -49,7 +74,11 @@ list($pendientes, $completadas) = listarTareas($usuario->nombre);
         echo "<div class='listaTareas'>";
         foreach ($completadas as $tarea) {
             echo "<div class='tareaCompletada'>";
-            echo "<p>" . htmlspecialchars($tarea->texto) . "</p>";
+            echo "  <p>" . htmlspecialchars($tarea->texto) . "</p>";
+            echo "  <form method='POST'>";
+            echo "    <button type='submit' value='{$tarea->id}' name='descompletar' class='descompletar'>Descompletar</button>";
+            echo "    <button type='submit' value='{$tarea->id}' name='eliminar' class='eliminar'>Eliminar</button>";
+            echo "  </form>";
             echo "</div>";
         }
         echo "</div>";

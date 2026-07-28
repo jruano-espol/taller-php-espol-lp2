@@ -69,3 +69,24 @@ code {
   border-radius: 3px;
   font-family: Consolas, monospace;
 }
+
+.listaTareas > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.listaTareas > div > form > button {
+  padding: 10px 18px;
+  background-color: #2E9E8F;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.listaTareas > div > form > .completar    { background-color: #2E9E8F }
+.listaTareas > div > form > .descompletar { background-color: #1F3864 }
+.listaTareas > div > form > .eliminar     { background-color: #B23A48 }

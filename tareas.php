@@ -3,7 +3,7 @@ session_start();
 require "usuario.php";
 require "tarea.php";
 
-if (!isset($_SESSION["cedula"]) && !validar($_SESSION["cedula"])) {
+if (!isset($_SESSION["cedula"]) || !validar($_SESSION["cedula"])) {
     header("Location: ingreso.php");
     exit;
 }
